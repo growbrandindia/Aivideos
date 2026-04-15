@@ -13,6 +13,7 @@
             --surface-hover: #111111;
             --accent: #00eb7f;
             --accent-hover: #00c76b;
+            --gradient: linear-gradient(90deg, #00eb7f, #0088ff, #00eb7f);
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
@@ -24,88 +25,135 @@
         h1, h2, h3, .font-special { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.5px; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .section { padding: 100px 0; border-top: 1px solid var(--border); }
+        .section { padding: 100px 0; border-top: 1px solid var(--border); position: relative; z-index: 2; }
+
+        /* --- ANIMATIONS & MOTION --- */
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); opacity: 0.5; }
+            50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
+            100% { transform: translateY(0px) scale(1); opacity: 0.5; }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .text-gradient {
+            background: var(--gradient);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 4s linear infinite;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* --- GLOW EFFECTS --- */
-        .glow { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 235, 127, 0.08) 0%, rgba(0,0,0,0) 70%); top: -150px; right: -150px; z-index: -1; }
-        
+        .glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 235, 127, 0.1) 0%, rgba(0,0,0,0) 60%); top: -150px; right: -150px; z-index: 0; animation: float 8s ease-in-out infinite; pointer-events: none; }
+        .glow-2 { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 136, 255, 0.05) 0%, rgba(0,0,0,0) 60%); bottom: 10%; left: -200px; z-index: 0; animation: float 10s ease-in-out infinite reverse; pointer-events: none; }
+
         /* --- NAV --- */
         nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--border); }
         .logo { font-weight: 700; font-size: 1.4rem; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;}
-        .logo span { color: var(--accent); }
+        .logo span { background: var(--gradient); background-size: 200% auto; -webkit-background-clip: text; color: transparent; animation: shine 3s linear infinite; }
 
         /* --- BUTTONS --- */
-        .btn { padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; border: none; cursor: pointer; font-size: 1rem; }
-        .btn-primary { background: var(--accent); color: #000; }
-        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 235, 127, 0.2); }
+        .btn { padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; border: none; cursor: pointer; font-size: 1rem; position: relative; overflow: hidden; z-index: 1; }
+        .btn-primary { background: var(--accent); color: #000; box-shadow: 0 0 15px rgba(0, 235, 127, 0.2); }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s; z-index: -1; }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 235, 127, 0.4); }
+        
         .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
 
         /* --- HERO --- */
-        .hero { padding: 80px 0 60px; text-align: center; }
-        .badge { background: var(--glass); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; display: inline-block; font-weight: 500; }
-        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 24px; font-weight: 700; }
+        .hero { padding: 100px 0 80px; text-align: center; position: relative; z-index: 2; }
+        .badge { background: var(--glass); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; display: inline-block; font-weight: 500; backdrop-filter: blur(5px); }
+        h1 { font-size: clamp(2.8rem, 7vw, 5rem); line-height: 1.1; margin-bottom: 24px; font-weight: 700; }
         .hero p { color: var(--text-dim); font-size: 1.15rem; max-width: 650px; margin: 0 auto 40px; }
         
+        /* --- INFINITE MARQUEE --- */
+        .marquee-container { width: 100%; overflow: hidden; background: var(--surface); padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
+        .marquee-content { display: flex; white-space: nowrap; animation: marquee 20s linear infinite; }
+        .marquee-content h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-dim); margin-right: 40px; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 40px; }
+        .marquee-content h2 span { color: var(--accent); font-size: 1rem; }
+
         /* --- STATS BAR (TRUST) --- */
-        .stats-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
-        .stat-item h4 { font-size: 2rem; color: var(--text-main); line-height: 1; margin-bottom: 5px; }
+        .stats-container { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .stat-item { transition: transform 0.3s ease; }
+        .stat-item:hover { transform: scale(1.1); }
+        .stat-item h4 { font-size: 2.5rem; color: var(--text-main); line-height: 1; margin-bottom: 5px; }
         .stat-item p { color: var(--accent); font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin: 0; }
 
         /* --- SHOWCASE GRID & VIDEO BOXES --- */
-        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
-        .video-box { background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; position: relative; }
-        .video-box:hover { border-color: rgba(0, 235, 127, 0.3); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .video-box { background: var(--surface); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .video-box:hover { border-color: var(--accent); transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0, 235, 127, 0.15); z-index: 10; }
         .video-box iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
-        
-        /* Aspect Ratios */
-        .ratio-9-16 { padding-top: 177.77%; } /* Vertical */
+        .ratio-9-16 { padding-top: 177.77%; }
 
         /* --- PROCESS/WHY US --- */
         .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; }
-        .process-card { background: var(--surface); padding: 32px; border-radius: 16px; border: 1px solid var(--border); }
-        .process-icon { font-size: 2rem; margin-bottom: 16px; }
-        .process-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        .process-card { background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%); padding: 40px 32px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; position: relative; overflow: hidden; }
+        .process-card:hover { border-color: rgba(0, 235, 127, 0.4); transform: translateY(-5px); }
+        .process-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--gradient); transform: scaleX(0); transition: 0.4s; transform-origin: left; }
+        .process-card:hover::after { transform: scaleX(1); }
+        .process-icon { font-size: 2.5rem; margin-bottom: 20px; display: inline-block; transition: transform 0.3s; }
+        .process-card:hover .process-icon { transform: scale(1.2) rotate(5deg); }
+        .process-card h3 { font-size: 1.4rem; margin-bottom: 12px; }
         .process-card p { color: var(--text-dim); font-size: 0.95rem; }
 
         /* --- CONVERSION AREA (PRICE + FORM) --- */
         .conversion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
         @media (max-width: 850px) { .conversion-grid { grid-template-columns: 1fr; } }
         
-        .price-card { background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%); border: 1px solid var(--accent); padding: 40px; border-radius: 24px; position: relative; }
-        .price-tag { font-size: 3.5rem; font-weight: 700; margin: 15px 0; }
-        .price-tag span { font-size: 1rem; color: var(--text-dim); font-weight: 400; font-family: 'Inter', sans-serif;}
-        .features-list { list-style: none; margin: 25px 0; }
-        .features-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; color: var(--text-dim); }
-        .features-list li::before { content: '✓'; color: var(--accent); font-weight: bold; }
+        .price-card { background: linear-gradient(145deg, #0d0d0d 0%, #020202 100%); border: 1px solid var(--accent); padding: 40px; border-radius: 24px; position: relative; overflow: hidden; }
+        .price-card::before { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: var(--accent); filter: blur(80px); opacity: 0.2; }
+        .price-tag { font-size: 4rem; font-weight: 700; margin: 15px 0; background: var(--gradient); -webkit-background-clip: text; color: transparent; animation: shine 3s linear infinite; background-size: 200% auto;}
+        .price-tag span { font-size: 1.2rem; color: var(--text-dim); font-weight: 400; font-family: 'Inter', sans-serif; -webkit-text-fill-color: var(--text-dim);}
+        .features-list { list-style: none; margin: 30px 0; position: relative; z-index: 1; }
+        .features-list li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px; color: #e5e7eb; font-size: 1.05rem; }
+        .features-list li::before { content: '✦'; color: var(--accent); font-weight: bold; font-size: 1.2rem; }
 
         /* --- FORM --- */
-        .form-card { background: var(--surface); padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
+        .form-card { background: var(--surface); padding: 40px; border-radius: 24px; border: 1px solid var(--border); transition: 0.3s; }
+        .form-card:focus-within { border-color: rgba(0, 235, 127, 0.5); box-shadow: 0 0 30px rgba(0, 235, 127, 0.05); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dim); }
         .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); color: white; padding: 14px 16px; border-radius: 8px; font-family: 'Inter', sans-serif; transition: 0.3s; }
-        .form-control:focus { outline: none; border-color: var(--accent); background: #000; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
+        .form-control:focus { outline: none; border-color: var(--accent); background: #000; box-shadow: 0 0 10px rgba(0, 235, 127, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
 
-        /* --- TRUST STRIP --- */
-        .trust-strip { text-align: center; padding: 40px 0; background: #050505; border-top: 1px solid var(--border); }
-        .trust-strip p { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .trust-logos { display: flex; justify-content: center; gap: 40px; opacity: 0.6; flex-wrap: wrap; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; }
     </style>
 </head>
 <body>
     <div class="glow"></div>
+    <div class="glow-2"></div>
 
     <nav>
         <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
-            <div class="logo">AMAN<span>.AI</span></div>
+            <div class="logo">Aman<span>.AI Videos</span></div>
             <a href="#booking" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Start Project</a>
         </div>
     </nav>
 
-    <header class="hero container">
+    <header class="hero container reveal">
         <div class="badge">Engineered for High-Converting Funnels</div>
-        <h1>Stop Burning Ad Spend.<br>Scale With <span style="color: var(--accent);">AI Video Ads.</span></h1>
+        <h1>Stop Burning Ad Spend.<br>Scale With <span class="text-gradient">AI Video Ads.</span></h1>
         <p>We build photorealistic AI commercials optimized for Meta Ads, YouTube Shorts, and brand landing pages. Get agency-level production at a fraction of the cost, delivered in 48 hours.</p>
         
         <div class="cta-group" style="display: flex; gap: 16px; justify-content: center;">
@@ -113,7 +161,7 @@
             <a href="#work" class="btn btn-outline">View AI Samples</a>
         </div>
 
-        <div class="stats-container">
+        <div class="stats-container reveal">
             <div class="stat-item">
                 <h4>48hr</h4>
                 <p>Turnaround Time</p>
@@ -129,62 +177,57 @@
         </div>
     </header>
 
-    <div class="trust-strip">
-        <div class="container">
-            <p>Formats Built to Convert On</p>
-            <div class="trust-logos">
-                <span>META ADS</span>
-                <span>INSTAGRAM REELS</span>
-                <span>YOUTUBE SHORTS</span>
-                <span>TIKTOK</span>
-            </div>
+    <div class="marquee-container reveal">
+        <div class="marquee-content">
+            <h2>Photorealistic AI Visuals <span>✦</span> Meta Ads Optimized <span>✦</span> Premium AI Voiceovers <span>✦</span> High Retention Scripts <span>✦</span> Brand Accurate <span>✦</span> </h2>
+            <h2>Photorealistic AI Visuals <span>✦</span> Meta Ads Optimized <span>✦</span> Premium AI Voiceovers <span>✦</span> High Retention Scripts <span>✦</span> Brand Accurate <span>✦</span> </h2>
         </div>
     </div>
 
-    <section id="work" class="section container">
+    <section id="work" class="section container reveal">
         <div style="text-align: center; margin-bottom: 50px;">
-            <h2 style="font-size: 2.5rem;">Recent <span style="color: var(--accent);">AI Ads</span></h2>
-            <p style="color: var(--text-dim); margin-top: 10px;">Photorealistic vertical renders designed for high retention.</p>
+            <h2 style="font-size: 3rem;">Recent <span class="text-gradient">AI Ads</span></h2>
+            <p style="color: var(--text-dim); margin-top: 10px; font-size: 1.1rem;">Photorealistic vertical renders designed for high retention.</p>
         </div>
 
         <div class="showcase-grid">
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJtLP9AfIX/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJs8fwAfqb/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJs0CkAT_X/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJsr5NgcZs/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJsh3IAQMH/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div class="video-box ratio-9-16">
+            <div class="video-box ratio-9-16 reveal">
                 <iframe src="https://www.instagram.com/reel/DXJsZciAQ8l/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
             </div>
         </div>
     </section>
 
-    <section class="section container">
+    <section class="section container reveal">
         <div style="text-align: center; margin-bottom: 50px;">
-            <h2 style="font-size: 2.5rem;">Why Brands <span style="color: var(--accent);">Switch to AI</span></h2>
+            <h2 style="font-size: 3rem;">Why Brands <span class="text-gradient">Switch to AI</span></h2>
         </div>
         <div class="process-grid">
-            <div class="process-card">
+            <div class="process-card reveal">
                 <div class="process-icon">🧠</div>
                 <h3>Ad-First Strategy</h3>
                 <p>We don't just generate videos; we build content designed for digital marketing funnels, complete with strong hooks and clear CTAs.</p>
             </div>
-            <div class="process-card">
+            <div class="process-card reveal">
                 <div class="process-icon">⏱️</div>
                 <h3>Skip The Shoot</h3>
                 <p>No actors, no studios, no weather delays. We create hyper-realistic product environments and human avatars digitally.</p>
             </div>
-            <div class="process-card">
+            <div class="process-card reveal">
                 <div class="process-icon">🎨</div>
                 <h3>Brand Accurate</h3>
                 <p>Your brand colors, logos, and exact product specifications are seamlessly integrated into the AI generation process.</p>
@@ -192,14 +235,14 @@
         </div>
     </section>
 
-    <section id="booking" class="section container">
+    <section id="booking" class="section container reveal">
         <div style="text-align: center; margin-bottom: 50px;">
-            <h2 style="font-size: 2.5rem;">Ready to <span style="color: var(--accent);">Scale?</span></h2>
-            <p style="color: var(--text-dim); margin-top: 10px;">Choose direct WhatsApp booking or submit a project brief below.</p>
+            <h2 style="font-size: 3rem;">Ready to <span class="text-gradient">Scale?</span></h2>
+            <p style="color: var(--text-dim); margin-top: 10px; font-size: 1.1rem;">Choose direct WhatsApp booking or submit a project brief below.</p>
         </div>
 
         <div class="conversion-grid">
-            <div class="price-card">
+            <div class="price-card reveal">
                 <div class="badge" style="margin-bottom: 0;">Standard Package</div>
                 <div class="price-tag">₹2,500 <span>/ 30 Sec</span></div>
                 <p style="color: var(--text-dim); font-size: 0.95rem;">Everything you need for a platform-ready commercial.</p>
@@ -218,7 +261,7 @@
                 </a>
             </div>
 
-            <div class="form-card">
+            <div class="form-card reveal">
                 <h3 style="margin-bottom: 24px; font-size: 1.5rem;">Submit Project Brief</h3>
                 <form action="https://formspree.io/f/xwvrjzjd" method="POST">
                     <div class="form-group">
@@ -240,12 +283,28 @@
         </div>
     </section>
 
-    <footer style="padding: 40px 24px; text-align: center; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border); background: #050505;">
+    <footer style="padding: 40px 24px; text-align: center; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border); background: #050505; position: relative; z-index: 2;">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="font-weight: 700; color: white;">AMAN<span style="color: var(--accent);">.AI</span></div>
+            <div style="font-weight: 700; color: white;">AMAN<span class="text-gradient">.AI</span></div>
             <div>Amanjobofficial@gmail.com</div>
             <div>&copy; 2026 Aman Khan. All rights reserved.</div>
         </div>
     </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger once on load
+    </script>
 </body>
 </html>
