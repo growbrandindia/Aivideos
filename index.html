@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Brand Visuals | High-Converting AI Video Ads</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- TOKENS --- */
+        :root {
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --surface-hover: #111111;
+            --accent: #00eb7f;
+            --accent-hover: #00c76b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: #9ca3af;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; }
+        h1, h2, h3, .font-special { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.5px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 100px 0; border-top: 1px solid var(--border); }
+
+        /* --- GLOW EFFECTS --- */
+        .glow { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 235, 127, 0.08) 0%, rgba(0,0,0,0) 70%); top: -150px; right: -150px; z-index: -1; }
+        
+        /* --- NAV --- */
+        nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 700; font-size: 1.4rem; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;}
+        .logo span { color: var(--accent); }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; border: none; cursor: pointer; font-size: 1rem; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 235, 127, 0.2); }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO --- */
+        .hero { padding: 80px 0 60px; text-align: center; }
+        .badge { background: var(--glass); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; display: inline-block; font-weight: 500; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 24px; font-weight: 700; }
+        .hero p { color: var(--text-dim); font-size: 1.15rem; max-width: 650px; margin: 0 auto 40px; }
+        
+        /* --- STATS BAR (TRUST) --- */
+        .stats-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .stat-item h4 { font-size: 2rem; color: var(--text-main); line-height: 1; margin-bottom: 5px; }
+        .stat-item p { color: var(--accent); font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin: 0; }
+
+        /* --- SHOWCASE GRID & VIDEO BOXES --- */
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+        .video-box { background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; position: relative; }
+        .video-box:hover { border-color: rgba(0, 235, 127, 0.3); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .video-box iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
+        
+        /* Aspect Ratios */
+        .ratio-9-16 { padding-top: 177.77%; } /* Vertical */
+
+        /* --- PROCESS/WHY US --- */
+        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; }
+        .process-card { background: var(--surface); padding: 32px; border-radius: 16px; border: 1px solid var(--border); }
+        .process-icon { font-size: 2rem; margin-bottom: 16px; }
+        .process-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        .process-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* --- CONVERSION AREA (PRICE + FORM) --- */
+        .conversion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        @media (max-width: 850px) { .conversion-grid { grid-template-columns: 1fr; } }
+        
+        .price-card { background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%); border: 1px solid var(--accent); padding: 40px; border-radius: 24px; position: relative; }
+        .price-tag { font-size: 3.5rem; font-weight: 700; margin: 15px 0; }
+        .price-tag span { font-size: 1rem; color: var(--text-dim); font-weight: 400; font-family: 'Inter', sans-serif;}
+        .features-list { list-style: none; margin: 25px 0; }
+        .features-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; color: var(--text-dim); }
+        .features-list li::before { content: '✓'; color: var(--accent); font-weight: bold; }
+
+        /* --- FORM --- */
+        .form-card { background: var(--surface); padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dim); }
+        .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); color: white; padding: 14px 16px; border-radius: 8px; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .form-control:focus { outline: none; border-color: var(--accent); background: #000; }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* --- TRUST STRIP --- */
+        .trust-strip { text-align: center; padding: 40px 0; background: #050505; border-top: 1px solid var(--border); }
+        .trust-strip p { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .trust-logos { display: flex; justify-content: center; gap: 40px; opacity: 0.6; flex-wrap: wrap; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
+            <div class="logo">AMAN<span>.AI</span></div>
+            <a href="#booking" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Start Project</a>
+        </div>
+    </nav>
+
+    <header class="hero container">
+        <div class="badge">Engineered for High-Converting Funnels</div>
+        <h1>Stop Burning Ad Spend.<br>Scale With <span style="color: var(--accent);">AI Video Ads.</span></h1>
+        <p>We build photorealistic AI commercials optimized for Meta Ads, YouTube Shorts, and brand landing pages. Get agency-level production at a fraction of the cost, delivered in 48 hours.</p>
+        
+        <div class="cta-group" style="display: flex; gap: 16px; justify-content: center;">
+            <a href="#booking" class="btn btn-primary">Book a Video for ₹2,500</a>
+            <a href="#work" class="btn btn-outline">View AI Samples</a>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <h4>48hr</h4>
+                <p>Turnaround Time</p>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>Brand Customization</p>
+            </div>
+            <div class="stat-item">
+                <h4>9:16</h4>
+                <p>Platform Optimized</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="trust-strip">
+        <div class="container">
+            <p>Formats Built to Convert On</p>
+            <div class="trust-logos">
+                <span>META ADS</span>
+                <span>INSTAGRAM REELS</span>
+                <span>YOUTUBE SHORTS</span>
+                <span>TIKTOK</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="work" class="section container">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="font-size: 2.5rem;">Recent <span style="color: var(--accent);">AI Ads</span></h2>
+            <p style="color: var(--text-dim); margin-top: 10px;">Photorealistic vertical renders designed for high retention.</p>
+        </div>
+
+        <div class="showcase-grid">
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJtLP9AfIX/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJs8fwAfqb/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJs0CkAT_X/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJsr5NgcZs/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJsh3IAQMH/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+            <div class="video-box ratio-9-16">
+                <iframe src="https://www.instagram.com/reel/DXJsZciAQ8l/embed/?hidecaption=true" scrolling="no" frameborder="0"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="section container">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="font-size: 2.5rem;">Why Brands <span style="color: var(--accent);">Switch to AI</span></h2>
+        </div>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-icon">🧠</div>
+                <h3>Ad-First Strategy</h3>
+                <p>We don't just generate videos; we build content designed for digital marketing funnels, complete with strong hooks and clear CTAs.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon">⏱️</div>
+                <h3>Skip The Shoot</h3>
+                <p>No actors, no studios, no weather delays. We create hyper-realistic product environments and human avatars digitally.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon">🎨</div>
+                <h3>Brand Accurate</h3>
+                <p>Your brand colors, logos, and exact product specifications are seamlessly integrated into the AI generation process.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking" class="section container">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="font-size: 2.5rem;">Ready to <span style="color: var(--accent);">Scale?</span></h2>
+            <p style="color: var(--text-dim); margin-top: 10px;">Choose direct WhatsApp booking or submit a project brief below.</p>
+        </div>
+
+        <div class="conversion-grid">
+            <div class="price-card">
+                <div class="badge" style="margin-bottom: 0;">Standard Package</div>
+                <div class="price-tag">₹2,500 <span>/ 30 Sec</span></div>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Everything you need for a platform-ready commercial.</p>
+                
+                <ul class="features-list">
+                    <li>Concept Ideation & Scriptwriting</li>
+                    <li>Photorealistic AI Visual Generation</li>
+                    <li>Premium AI Voiceover (Human-like)</li>
+                    <li>Brand Logo & Color Integration</li>
+                    <li>Dynamic Captions & Sound Design</li>
+                    <li>Commercial Usage Rights</li>
+                </ul>
+
+                <a href="https://wa.me/918826155917?text=Hi%20Aman,%20I'm%20interested%20in%20the%20₹2,500%20AI%20Video%20Package" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                    Fast Track: Book via WhatsApp ➔
+                </a>
+            </div>
+
+            <div class="form-card">
+                <h3 style="margin-bottom: 24px; font-size: 1.5rem;">Submit Project Brief</h3>
+                <form action="https://formspree.io/f/xwvrjzjd" method="POST">
+                    <div class="form-group">
+                        <label>Name / Brand Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g., John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Work Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="hello@yourbrand.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>What's the goal of the video?</label>
+                        <textarea name="message" class="form-control" placeholder="e.g., I need a 30-sec Instagram Reel to promote our new skincare line using an AI avatar..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline" style="width: 100%;">Send Brief via Email</button>
+                    <p style="text-align: center; font-size: 0.8rem; color: var(--text-dim); margin-top: 15px;">I'll review your brief and reply within 12 hours.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 40px 24px; text-align: center; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border); background: #050505;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div style="font-weight: 700; color: white;">AMAN<span style="color: var(--accent);">.AI</span></div>
+            <div>Amanjobofficial@gmail.com</div>
+            <div>&copy; 2026 Aman Khan. All rights reserved.</div>
+        </div>
+    </footer>
+</body>
+</html>
